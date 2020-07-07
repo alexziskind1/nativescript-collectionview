@@ -13,7 +13,7 @@ function extend(to, _from): any {
 }
 
 const VUE_VIEW = '__vueVNodeRef__';
-export default  {
+export default {
     props: {
         items: {
             validator: (val) => !val || Array.isArray(val) || val instanceof ObservableArray,

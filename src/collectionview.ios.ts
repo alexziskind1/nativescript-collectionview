@@ -22,6 +22,9 @@ declare module '@nativescript/core/ui/core/view' {
     }
 }
 
+declare var CHTCollectionViewWaterfallLayout;
+declare var CHTCollectionViewDelegateWaterfallLayout;
+
 export class CollectionView extends CollectionViewBase {
     private _layout: UICollectionViewFlowLayout;
     private _dataSource: ICollectionViewDataSource;
@@ -39,7 +42,8 @@ export class CollectionView extends CollectionViewBase {
     }
 
     public createNativeView() {
-        this._layout = UICollectionViewFlowLayout.alloc().init();
+        //this._layout = UICollectionViewFlowLayout.alloc().init();
+        this._layout = CHTCollectionViewWaterfallLayout.alloc().init();
         this._layout.minimumLineSpacing = 0;
         this._layout.minimumInteritemSpacing = 0;
 
@@ -589,6 +593,7 @@ const CollectionViewDataSource = (NSObject as any).extend(
 
 declare class IUICollectionViewDelegateImpl extends NSObject {
     static new(): IUICollectionViewDelegateImpl;
+
     _owner: WeakRef<CollectionView>;
     _measureCellMap: Map<string, { cell: CollectionViewCell; view: View }>;
 }
@@ -695,6 +700,6 @@ const UICollectionViewDelegateImpl = (NSObject as any).extend(
         },
     },
     {
-        protocols: [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout],
+        protocols: [UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CHTCollectionViewDelegateWaterfallLayout],
     }
 ) as typeof IUICollectionViewDelegateImpl;

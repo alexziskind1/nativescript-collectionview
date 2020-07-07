@@ -113,9 +113,9 @@ export class CollectionView extends CollectionViewBase {
         const orientation = this._getLayoutManagarOrientation();
 
         // initGridLayoutManager();
-        const layoutManager = new com.nativescript.collectionview.PreCachingGridLayoutManager(this._context, 1);
+        const layoutManager = new androidx.recyclerview.widget.StaggeredGridLayoutManager(1, androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL);
         nativeView.setLayoutManager(layoutManager);
-        layoutManager.isScrollEnabled = this.isScrollEnabled;
+        // layoutManager.isScrollEnabled = this.isScrollEnabled;
         layoutManager.setOrientation(orientation);
         nativeView.layoutManager = layoutManager;
 
@@ -141,15 +141,15 @@ export class CollectionView extends CollectionViewBase {
     }
 
     _scrollOrLoadMoreChangeCount = 0;
-    _nScrollListener:  com.nativescript.collectionview.OnScrollListener.Listener
+    _nScrollListener: com.nativescript.collectionview.OnScrollListener.Listener;
     private attach() {
         if (this._scrollOrLoadMoreChangeCount > 0 && this.isLoaded) {
             const nativeView = this.nativeViewProtected;
             if (!nativeView.scrollListener) {
                 this._nScrollListener = new com.nativescript.collectionview.OnScrollListener.Listener({
-                    onScrollStateChanged:this.onScrollStateChanged.bind(this),
-                    onScrolled:this.onScrolled.bind(this),
-                })
+                    onScrollStateChanged: this.onScrollStateChanged.bind(this),
+                    onScrolled: this.onScrolled.bind(this),
+                });
                 const scrollListener = new com.nativescript.collectionview.OnScrollListener(this._nScrollListener);
                 nativeView.addOnScrollListener(scrollListener);
                 nativeView.scrollListener = scrollListener;
@@ -186,7 +186,7 @@ export class CollectionView extends CollectionViewBase {
         if (this.scrolling && newState === 0) {
             // SCROLL_STATE_IDLE
             this.scrolling = false;
- 
+
             if (this.hasListeners(CollectionViewBase.scrollEndEvent)) {
                 this.notify({
                     object: this,
@@ -580,10 +580,10 @@ export class CollectionView extends CollectionViewBase {
 
     @profile
     disposeViewHolderViews() {
-        this._viewHolders.forEach(v=>{
+        this._viewHolders.forEach((v) => {
             v.view = null;
             v.clickListener = null;
-        })
+        });
         this._viewHolders = new Array();
         this._viewHolderChildren.forEach(this._removeViewCore);
     }
@@ -610,7 +610,7 @@ export class CollectionView extends CollectionViewBase {
             CollectionViewCellHolder = com.nativescript.collectionview.CollectionViewCellHolder as any;
         }
         // initCellViewHolder();
-        
+
         const holder = new CollectionViewCellHolder(view.nativeView);
 
         const collectionView = this;
@@ -625,7 +625,7 @@ export class CollectionView extends CollectionViewBase {
                     view: holder.view,
                 });
             },
-        })
+        });
         view.nativeView.setOnClickListener(clickListener);
         holder.clickListener = clickListener;
         holder.view = view;
